@@ -60,10 +60,8 @@ def test_adicionando_identificadores_medicao():
     df_extracao = consolidador.extrai_valores_ezmt(ezmtp_sheet_df)
     df_id = consolidador.normaliza_nome_colunas_ezmtp(df_ezmtp)
 
-    # Realize a junção
     result_df = consolidador.adicionando_identificadores_medicao(df_extracao=df_extracao, df_ezmtp=df_id)
 
-    # Verifique se as colunas identificadoras estão presentes no resultado
     assert all(
         col in result_df.columns for col in ["#sys_loc_code", "measurement_method", "measurement_date", "remark"])
 
@@ -73,12 +71,9 @@ def test_adicona_unidade_param():
     ezmtp_sheet_df = consolidador.normaliza_nome_colunas_ezmtp(df_ezmtp)
     df_extracao = consolidador.extrai_valores_ezmt(ezmtp_sheet_df)
 
-    # Aplique a função
     result_df = consolidador.adicona_unidade_param(df_extracao)
 
-    # Verifique se a coluna "param_unit" está presente no resultado
     assert "param_unit" in result_df.columns
 
-    # Verifique se as unidades estão corretamente atribuídas
     assert result_df.loc[0, "param_unit"] == "-"
     assert result_df.loc[1, "param_unit"] == "-"
