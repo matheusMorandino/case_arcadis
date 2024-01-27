@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 
 
 class GUI:
-    def __init__(self, processar_arquivos=lambda input_files, output_path, progress_bar: None):
+    def __init__(self, nome_janela: str, processar_arquivos=lambda input_files, output_path, progress_bar: None):
         self.arquivos_selecionados = []
         self.output_path = ""
 
@@ -15,7 +15,7 @@ class GUI:
         ]
 
         # Criando janela
-        self.window = sg.Window("Case 3", self.layout)
+        self.window = sg.Window(nome_janela, self.layout)
 
         # Implementando a função de processamento de arquivos
         self.process_files_callback = processar_arquivos

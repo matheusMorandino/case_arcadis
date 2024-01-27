@@ -43,6 +43,6 @@ def processar_arquivos(input_files: list[str], output_path: str, progress_bar: s
 
 
 if __name__ == "__main__":
-    gui = GUI(processar_arquivos=processar_arquivos)
+    gui = GUI(nome_janela="Case 3", processar_arquivos=processar_arquivos)
     gui.get_eventos()
     gui.fechar_janela()
