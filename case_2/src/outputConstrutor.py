@@ -234,6 +234,7 @@ class OutputConstrutor:
         """
         Salva o workbook formatado no local desejado
 
-        :param output_path:
+        :param output_path: Path para criação do arquivo de excel
+        :type output_path: str
         """
         self.wb_header.save(output_path)
