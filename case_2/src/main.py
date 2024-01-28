@@ -1,5 +1,6 @@
 import os
 import unificadorTabelas
+import outputConstrutor
 
 if __name__ == "__main__":
     ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,5 +10,8 @@ if __name__ == "__main__":
     unificador = unificadorTabelas.UnificadorTabela()
 
     df = unificador.consolida_dados_subistancias(input_path, para_output=True)
+
+    construtor_out = outputConstrutor.OutputConstrutor(df=df)
+    construtor_out.salvar_workbook_formatado("output_final.xlsx")
 
     print(df.to_string())
