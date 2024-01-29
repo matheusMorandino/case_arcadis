@@ -8,8 +8,8 @@ class GUI:
 
         # Definindo GUI layout
         self.layout = [
-            [sg.Text("Selecione o(s) arquivo(s) .xlsx:"), sg.Input(key="-FILES-", enable_events=True),
-             sg.FilesBrowse(file_types=(("Excel Files", "*.xlsx"),))],
+            [sg.Text("Selecione o(s) arquivo(s) .pdf:"), sg.Input(key="-FILES-", enable_events=True),
+             sg.FilesBrowse(file_types=(("PDF Files", "*.pdf"),))],
             [sg.Text("Output Path:"), sg.Input(key="-OUTPUT-", enable_events=True), sg.FolderBrowse()],
             [sg.Button("Processar", key="-RUN-")]
         ]
