@@ -30,7 +30,7 @@ def processar_arquivos(input_files: list[str], output_path: str, progress_bar: s
 
         try:
             dados_segmentados = segmentador.segmenta_pdf(path_arquivo=file)
-            processa_tabela = FabricaProcessadorPDF().criar_processador(tabelas_segmentadas=dados_segmentados)
+            processa_tabela = FabricaProcessadorPDF().criar_processador(file_path=file, tabelas_segmentadas=dados_segmentados)
 
             df_auxiliar = processa_tabela.formata_arquivo_pdf(tabelas_segmentadas=dados_segmentados)
             df_processados = pd.concat([df_processados, df_auxiliar], ignore_index=True)
