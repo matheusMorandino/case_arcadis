@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from src.consolidadorTabela import ConsolidadorTabela
+from src.consolidadorTabelaExemplo import ConsolidadorTabela
 
 # Criar dados de exemplo para os testes
 cadastro_data = {
@@ -34,7 +34,7 @@ df_ezmtp = pd.DataFrame(ezmtp_data)
 # Testes
 def test_normaliza_nome_colunas_ezmtp():
     consolidador = ConsolidadorTabela()
-    result_df = consolidador.normaliza_nome_colunas_ezmtp(df_ezmtp)
+    result_df = consolidador.__normaliza_nome_colunas_ezmtp(df_ezmtp)
     assert set(result_df.columns) == {
         "#sys_loc_code", "measurement_method", "remark", "Resp Coleta", "Cond clim", "Temp", "pH", "measurement_date", "Cond elet", "OD", "ORP", "Turb"
     }
@@ -42,7 +42,7 @@ def test_normaliza_nome_colunas_ezmtp():
 def test_avalia_integridade_input():
     consolidador = ConsolidadorTabela()
     with pytest.raises(ValueError, match="Colunas necessárias ausentes: Cliente:"):
-        consolidador.avalia_integridade_input(df_cadastro.drop(columns=["Cliente:"]), df_ezmtp)
+        consolidador.__avalia_integridade_input(df_cadastro.drop(columns=["Cliente:"]), df_ezmtp)
 
 def test_verificar_nan_no_dataframe():
     consolidador = ConsolidadorTabela()
@@ -51,16 +51,16 @@ def test_verificar_nan_no_dataframe():
     ezmt_df_nan = pd.DataFrame(ezmtp_data_nan)
 
     with pytest.raises(ValueError, match="A planilha EZMtp contém valores vazios e/ou inválidos.\nCoordenadas dos valores inválidos:\nLinha: 1, Coluna: Data da medição\n"):
-        consolidador.verificar_nan_no_dataframe(ezmt_df_nan, sheet_nome="EZMtp")
+        consolidador.__verificar_nan_no_dataframe(ezmt_df_nan, sheet_nome="EZMtp")
 
 def test_adicionando_identificadores_medicao():
     consolidador = ConsolidadorTabela()
     # Garanta que as colunas necessárias estejam presentes nos dataframes
-    ezmtp_sheet_df = consolidador.normaliza_nome_colunas_ezmtp(df_ezmtp)
-    df_extracao = consolidador.extrai_valores_ezmt(ezmtp_sheet_df)
-    df_id = consolidador.normaliza_nome_colunas_ezmtp(df_ezmtp)
+    ezmtp_sheet_df = consolidador.__normaliza_nome_colunas_ezmtp(df_ezmtp)
+    df_extracao = consolidador.__extrai_valores_ezmt(ezmtp_sheet_df)
+    df_id = consolidador.__normaliza_nome_colunas_ezmtp(df_ezmtp)
 
-    result_df = consolidador.adicionando_identificadores_medicao(df_extracao=df_extracao, df_ezmtp=df_id)
+    result_df = consolidador.__adicionando_identificadores_medicao(df_extracao=df_extracao, df_ezmtp=df_id)
 
     assert all(
         col in result_df.columns for col in ["#sys_loc_code", "measurement_method", "measurement_date", "remark"])
@@ -68,10 +68,10 @@ def test_adicionando_identificadores_medicao():
 
 def test_adicona_unidade_param():
     consolidador = ConsolidadorTabela()
-    ezmtp_sheet_df = consolidador.normaliza_nome_colunas_ezmtp(df_ezmtp)
-    df_extracao = consolidador.extrai_valores_ezmt(ezmtp_sheet_df)
+    ezmtp_sheet_df = consolidador.__normaliza_nome_colunas_ezmtp(df_ezmtp)
+    df_extracao = consolidador.__extrai_valores_ezmt(ezmtp_sheet_df)
 
-    result_df = consolidador.adicona_unidade_param(df_extracao)
+    result_df = consolidador.__adicona_unidade_param(df_extracao)
 
     assert "param_unit" in result_df.columns
 

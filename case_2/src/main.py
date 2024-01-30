@@ -3,8 +3,8 @@ import sys
 from gui import GUI
 import pandas as pd
 import PySimpleGUI as sg
-import unificadorTabelas
 import outputConstrutor
+from fabricaUnificadorTabelas import FabricaUnificadorTabelas
 from datetime import datetime
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,7 +19,7 @@ def processar_arquivos(input_files: list[str], output_path: str, progress_bar: s
     :param progress_bar:
     :return:
     """
-    unificador = unificadorTabelas.UnificadorTabela()
+    unificador = FabricaUnificadorTabelas()
 
     df_processados = pd.DataFrame(columns=["CAS", "Parâmetro", "efeito", "Concentração de solubilidade",
                                            "Valor VOR (mg/l)", "VOR", "amb aberto", "CMA aberto", "amb fechado",
@@ -31,7 +31,7 @@ def processar_arquivos(input_files: list[str], output_path: str, progress_bar: s
                                    'Arquivo atual: ' + os.path.basename(file))
 
         try:
-            df_auxiliar = unificador.consolida_dados_subistancias(file_path=file, para_output=True)
+            df_auxiliar = unificador.criar_unificador(file).consolida_dados_subistancias(file_path=file, para_output=True)
             df_processados = pd.concat([df_processados, df_auxiliar], ignore_index=True)
         except Exception as e:
             sg.popup_error(f"Erro {os.path.basename(file)}: {str(e)}")

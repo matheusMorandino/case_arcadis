@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import pytest
-from src import unificadorTabelas
+from src import unificadorTabelasExemplo
 
 
 # Helper function to create a sample DataFrame for testing
@@ -56,7 +56,7 @@ def create_sample_sem_cma_df():
 
 @pytest.fixture
 def sample_unificador_tabela():
-    return unificadorTabelas.UnificadorTabela()
+    return unificadorTabelasExemplo.UnificadorTabelasExemplo()
 
 
 def test_calcula_cma(sample_unificador_tabela):
