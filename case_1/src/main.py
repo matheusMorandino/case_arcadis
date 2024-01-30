@@ -3,7 +3,8 @@ import sys
 import pandas as pd
 from gui import GUI
 import PySimpleGUI as sg
-from processadorTabela import ProcessadorTabela
+from segmentadorPDF import SegmentadorPDF
+from fabricaProcessadorPDF import FabricaProcessadorPDF
 from construtorOutput import ConstrutorOutput
 from datetime import datetime
 
@@ -17,7 +18,7 @@ def processar_arquivos(input_files: list[str], output_path: str, progress_bar: s
     :param progress_bar:
     :return:
     """
-    processa_tabela = ProcessadorTabela()
+    segmentador = SegmentadorPDF()
 
     df_processados = pd.DataFrame(columns=["Identificação interna", "Nome da amostra", "Data de coleta",
                                            "Horário de coleta", "Parâmetro químico", "Resultado",
@@ -28,7 +29,10 @@ def processar_arquivos(input_files: list[str], output_path: str, progress_bar: s
                                    'Arquivo atual: ' + os.path.basename(file))
 
         try:
-            df_auxiliar = processa_tabela.formata_arquivo_pdf(path_arquivo=file)
+            dados_segmentados = segmentador.segmenta_pdf(path_arquivo=file)
+            processa_tabela = FabricaProcessadorPDF().criar_processador(tabelas_segmentadas=dados_segmentados)
+
+            df_auxiliar = processa_tabela.formata_arquivo_pdf(tabelas_segmentadas=dados_segmentados)
             df_processados = pd.concat([df_processados, df_auxiliar], ignore_index=True)
         except Exception as e:
             sg.popup_error(f"Erro {os.path.basename(file)}: {str(e)}")
